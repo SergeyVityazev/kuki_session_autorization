@@ -1,10 +1,6 @@
 <?php
-require_once __DIR__ . '/functions.php';
-
-if (isAuthorized()) {
-    redirect('index');
-}
-
+require_once __DIR__ . '/function.php';
+session_start();
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $login = $_POST['login'];
     $password = $_POST['password'];
@@ -12,23 +8,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $_SESSION['login'] = $login;
         $_SESSION['Autorized'] = true;
     }
-
     if ($login!="" and $password=="")
     {
         $_SESSION['Guest']=true;
         $_SESSION['NameGuest']=$login;
     }
-
     if ($_SESSION['Guest']==true)
         header('Location:list.php');
-
     if (login($login, $password)) {
+        $_SESSION['Autorized']=true;
         header('Location:list.php');
     } else {
         echo "Логин или пароль не верные. Авторизуйтесь или войдите как гость";
         $errors[] = 'Логин или пароль неверные';
     }
 }
+
 ?>
 <!doctype html>
 <html lang="en">
