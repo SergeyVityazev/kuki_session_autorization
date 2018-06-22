@@ -1,11 +1,6 @@
 <?php
 session_start();
 
-var_dump($_POST);
-echo "<br>";
-var_dump($_GET);
-
-
 if (!empty($_GET['TestName']) and !isset($_GET["Delete"])) {
     $_SESSION['NameGuest'] = $_GET["NameGuest"];
     $_SESSION['load'] = true;
@@ -19,21 +14,22 @@ if (isset ($_POST['Delete'])) {
 }
 
 
+
 if (isset ($_POST['Select'])) {
     $_SESSION['TestName'] = $_POST['TestName'];
     header("Location:test.php");
 
 }
 
-
-
 if (empty($_SESSION['Autorized']) and empty($_SESSION['Guest'])){
     header('HTTP/1.0 403 Forbidden');
     exit();
 }
 
-
-
+if (!empty($_POST['Exit'])){
+    $_SESSION['Autorized']=false;
+    header("Location:index.php");
+}
 
 
 if (!empty($_FILES)) // Подгружаем файл
@@ -57,8 +53,6 @@ function load()
 
 ?>
 
-
-
 <!DOCTYPE HTML>
 <html>
 <head>
@@ -68,9 +62,12 @@ function load()
     if ($_SESSION['Guest']==true)
     {
         echo "Здравствуйте! ".$_SESSION['NameGuest']. " Вы вошли как гость";
+        $_SESSION['UserName']=$_SESSION['NameGuest'];
     }elseif($_SESSION['Autorized']){
         echo "Здравствуйте! ".$_SESSION['login']." . Вы вошли как авторизованный пользователь";
+        $_SESSION['UserName']=$_SESSION['login'];
     }
+
     ?>
 </p>
 
@@ -102,7 +99,6 @@ if ($handle = opendir('test/')) {
 
 <!--ОТРИСОВЫВАЕМ ТЕСТЫ-->
 <form enctype="multipart/form-data"  method="post">
-    <p><input type=text placeholder="Введите Ваше имя" name="NameGuest"></p>
     <?php
     foreach ($Testes as $key=>$value){
         ?>
@@ -115,6 +111,7 @@ if ($handle = opendir('test/')) {
     <br/>
     <?php if ($_SESSION['Autorized']) { ?>
         <input type="submit" value="Удалить" name="Delete">
+        <input type="submit" value="Выйти" name="Exit">
     <?php } ?>
 </form >
 </body>
