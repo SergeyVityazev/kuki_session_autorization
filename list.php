@@ -28,6 +28,7 @@ if (empty($_SESSION['Autorized']) and empty($_SESSION['Guest'])){
 
 if (!empty($_POST['Exit'])){
     $_SESSION['Autorized']=false;
+    $_SESSION['Guest']=false;
     header("Location:index.php");
 }
 
@@ -109,10 +110,12 @@ if ($handle = opendir('test/')) {
     <input type="submit" value="Выбрать" name ='Select'>
     <br/>
     <br/>
-    <?php if ($_SESSION['Autorized']) { ?>
+<?php if ($_SESSION['Autorized']==true) { ?>
         <input type="submit" value="Удалить" name="Delete">
-        <input type="submit" value="Выйти" name="Exit">
-    <?php } ?>
+        <?php } ?>
+
+    <input type="submit" value="Выйти" name="Exit">
+
 </form >
 </body>
 </html>
