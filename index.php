@@ -1,6 +1,10 @@
 <?php
 require_once __DIR__ . '/function.php';
 session_start();
+//Обнуляем данные сессии при открыити страницы
+$_SESSION['Autorized']=false;
+$_SESSION['Guest']=false;
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $login = $_POST['login'];
     $password = $_POST['password'];
@@ -59,5 +63,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </section>
 </body>
 </html>
+
 
 
